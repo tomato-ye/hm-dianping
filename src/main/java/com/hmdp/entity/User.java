@@ -29,7 +29,7 @@ public class User implements Serializable {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO) // @TableId 用来指定表中的主键字段
     private Long id;
 
     /**

@@ -23,7 +23,7 @@ public interface IUserService extends IService<User> {
      * @param session
      * @return
      */
-    Result sendCode(String phone, HttpSession session);
+    Result sendCode(String phone);
 
     /**
      * 登录功能
@@ -31,6 +31,6 @@ public interface IUserService extends IService<User> {
      * @param session
      * @return
      */
-    Result login(LoginFormDTO loginForm, HttpSession session);
+    Result login(LoginFormDTO loginForm);
 
 }

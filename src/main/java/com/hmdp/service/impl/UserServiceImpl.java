@@ -13,12 +13,10 @@ import com.hmdp.mapper.UserMapper;
 import com.hmdp.service.IUserService;
 import com.hmdp.utils.RegexUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,11 +43,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     /**
      * 发送手机验证码
      * @param phone
-     * @param session
      * @return
      */
     @Override
-    public Result sendCode(String phone, HttpSession session) {
+    public Result sendCode(String phone) {
 
         // 1. 校验手机号
         if (RegexUtils.isPhoneInvalid(phone)) {
@@ -73,11 +70,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     /**
      * 登录功能
      * @param loginForm
-     * @param session
      * @return
      */
     @Override
-    public Result login(LoginFormDTO loginForm, HttpSession session) {
+    public Result login(LoginFormDTO loginForm) {
 
         // 1. 校验手机号
         String phone = loginForm.getPhone();

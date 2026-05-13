@@ -28,6 +28,11 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    /**
+     * 根据id查询商铺信息
+     * @param id
+     * @return
+     */
     @Override
     public Result queryById(Long id) {
 
@@ -36,25 +41,26 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         // 1. 从Redis查询商铺缓存
         String shopJson = stringRedisTemplate.opsForValue().get(key);
 
-        // 2. 判断缓存是否存在
+        // 2. 判断Redis中是否存在
         if (StrUtil.isNotBlank(shopJson)) {
-            // 2.1. Redis中存在--> 直接返回商铺信息
+            // 2.1 存在--> 直接返回商铺信息
             Shop shop = JSONUtil.toBean(shopJson, Shop.class);
             return Result.ok(shop);
         }
 
-        // 2.2. Redis中不存在--> 根据id查询数据库
+        // 2.2 不存在--> 根据id查询数据库
         Shop shop = getById(id);
 
-        // 2.2.1 数据库中不存在--> 返回错误
+        // 3. 判断数据库中是否存在
         if (shop == null) {
+            // 3.1 数据库中不存在--> 返回错误信息
             return Result.fail("店铺不存在！");
         }
 
-        // 2.2.2 数据库中存在--> 写入Redis
+        // 3.2 数据库中存在--> 写入Redis
         stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop));
 
-        // 3. 返回
+        // 4. 返回
         return Result.ok(shop);
 
     }
